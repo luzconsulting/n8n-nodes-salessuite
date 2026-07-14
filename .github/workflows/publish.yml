@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write
-      contents: read
+      id-token: write    # Zwingend erforderlich für OIDC und Provenance!
+      contents: write    # Erlaubt GitHub Actions den sauberen Umgang mit Tags/Releases
 
     steps:
       - uses: actions/checkout@v6
