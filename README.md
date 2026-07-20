@@ -1,7 +1,7 @@
 # @luzconsulting/n8n-nodes-salessuite
 
 ![n8n Community Node](https://img.shields.io/badge/n8n-community--node-FF6D5A)
-![Version](https://img.shields.io/badge/version-1.0.1-blue)
+![Version](https://img.shields.io/badge/version-1.0.5-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D20.15-brightgreen)
 ![SalesSuite API](https://img.shields.io/badge/SalesSuite%20API-1.4.0-orange)
@@ -57,6 +57,24 @@ Restart n8n afterwards — the node appears under both "SalesSuite" and "SalesSu
 ### Credentials
 
 The node authenticates with an API key sent as an `x-api-key` header against `https://api.salessuite.com/api/v1`. Generate a key in SalesSuite under **Settings → Integrations → API Keys**, then add it as a new **SalesSuite API** credential in n8n. The credential includes a built-in connection test.
+
+## Usage example
+
+Create a new contact, create a deal for them, then log a call activity against that deal:
+
+1. Add a **SalesSuite** node, select your **SalesSuite API** credential. Set **Resource** to `Contact` and **Operation** to `Create Contact`. Fill in the required **Fields** (e.g. email, first/last name).
+2. Add a second **SalesSuite** node with **Resource** `Deal` and **Operation** `Create Deal`. Set **Deal Name**, then set **Contact Name or ID** to the contact created in step 1, e.g.:
+   ```
+   {{ $node["SalesSuite"].json.id }}
+   ```
+   Pick a **Pipeline Name or ID** and **Phase Name or ID** from the dropdowns.
+3. Add a third **SalesSuite** node with **Resource** `Call Activity` and **Operation** `Create Call Activity`. Set **Attach To** to `Deal`, then set **Deal Name or ID** to the deal created in step 2, e.g.:
+   ```
+   {{ $node["SalesSuite1"].json.id }}
+   ```
+   Pick a **Call Type Name or ID** and fill in **Notes**.
+
+Running the workflow creates the contact, links a deal to it, and logs a call activity on that deal — each step passes its output ID into the next via an expression.
 
 ## Maintenance status
 

@@ -1,6 +1,6 @@
 {
   "name": "@luzconsulting/n8n-nodes-salessuite",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Connect n8n with SalesSuite CRM",
   "type": "commonjs",
   "keywords": [
