@@ -292,10 +292,11 @@ export class SalesSuiteTrigger implements INodeType {
 					webhookData.subscriptionId = res.id;
 					return true;
 				} catch (e) {
-					if (e instanceof NodeOperationError) throw e;
-					throw new NodeApiError(this.getNode(), e as JsonObject, {
-						message: "Failed to create webhook subscription",
-					});
+					throw e instanceof NodeOperationError
+						? e
+						: new NodeApiError(this.getNode(), e as JsonObject, {
+								message: "Failed to create webhook subscription",
+							});
 				}
 			},
 

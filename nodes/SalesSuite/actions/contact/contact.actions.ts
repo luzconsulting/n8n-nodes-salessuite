@@ -1,4 +1,10 @@
-import { ApplicationError, IDataObject, IExecuteFunctions } from "n8n-workflow";
+import {
+	ApplicationError,
+	IDataObject,
+	IExecuteFunctions,
+	INode,
+	NodeOperationError,
+} from "n8n-workflow";
 
 import { ssRequest } from "../../helpers/apiclient";
 import {
@@ -150,7 +156,7 @@ function isMainContactPersonEmail(
 
 // Accepts either an already-parsed array/object (n8n "json" field) or a JSON
 // string and returns the parsed value. Throws a readable error on bad JSON.
-function parseJsonParam(raw: unknown, fieldName: string): unknown {
+function parseJsonParam(node: INode, raw: unknown, fieldName: string): unknown {
 	if (raw === undefined || raw === null || raw === "") return undefined;
 	if (typeof raw !== "string") return raw;
 	const trimmed = raw.trim();
@@ -158,7 +164,7 @@ function parseJsonParam(raw: unknown, fieldName: string): unknown {
 	try {
 		return JSON.parse(trimmed);
 	} catch {
-		throw new ApplicationError(`${fieldName} must be valid JSON.`);
+		throw new NodeOperationError(node, `${fieldName} must be valid JSON.`);
 	}
 }
 
@@ -467,10 +473,12 @@ export async function handleContact(
 				const page = this.getNodeParameter("page", i, 0) as number;
 				const pageSize = this.getNodeParameter("pageSize", i, 25) as number;
 				const orFilterGroups = parseJsonParam(
+					this.getNode(),
 					this.getNodeParameter("orFilterGroups", i, "[]"),
 					"orFilterGroups",
 				);
 				const orderBy = parseJsonParam(
+					this.getNode(),
 					this.getNodeParameter("orderBy", i, "[]"),
 					"orderBy",
 				);

@@ -1,4 +1,9 @@
-import type { IHookFunctions, IWebhookFunctions } from "n8n-workflow";
+import type {
+	IHookFunctions,
+	IWebhookFunctions,
+	JsonObject,
+} from "n8n-workflow";
+import { NodeApiError } from "n8n-workflow";
 
 import { ssRequest } from "./apiclient";
 
@@ -79,7 +84,8 @@ export async function deleteWebhookByIdWithRetry(
 				{ id, error: msg },
 			);
 			if (attempt === retries) {
-				if (opts?.failOnError) throw e;
+				if (opts?.failOnError)
+					throw new NodeApiError(ctx.getNode(), e as JsonObject);
 				return false;
 			}
 		}

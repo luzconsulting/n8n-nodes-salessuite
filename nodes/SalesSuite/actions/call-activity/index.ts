@@ -246,11 +246,7 @@ export const callActivityFields: INodeProperties[] = [
 		},
 	},
 	{
-		// This field is a dynamic dropdown of the contact persons' phone numbers, not
-		// an entity Name/ID selector, so the standard "Name or ID" naming and the
-		// "specify an ID" description do not apply here.
-		// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
-		displayName: "Callee Phone Number",
+		displayName: "Callee Phone Number Name or ID",
 		name: "calleePhoneNumber",
 		type: "options",
 		typeOptions: {
@@ -271,9 +267,8 @@ export const callActivityFields: INodeProperties[] = [
 				operation: ["createCallActivity"],
 			},
 		},
-		// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-dynamic-options
 		description:
-			'Phone number of the called contact person. Choose from the list, or specify a number using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
 	},
 	{
 		displayName: "Notes",
